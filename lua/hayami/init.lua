@@ -203,9 +203,11 @@ end
 
 function M.select_buffer()
 	local selected = state.buffers[state.selected_idx]
-	if selected then
+	if selected and vim.api.nvim_buf_is_valid(selected.bufnr) then
 		M.close()
 		vim.api.nvim_set_current_buf(selected.bufnr)
+	else
+		vim.notify("Selected buffer is invalid or does not exist", vim.log.levels.ERROR)
 	end
 end
 
