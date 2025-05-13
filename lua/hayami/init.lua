@@ -109,6 +109,12 @@ local function setup_keymaps()
 		silent = true,
 	})
 
+	vim.api.nvim_buf_set_keymap(buf, "n", "q", "", {
+		callback = M.close,
+		noremap = true,
+		silent = true,
+	})
+
 	vim.api.nvim_buf_set_keymap(buf, "n", c.opts.mappings.select, "", {
 		callback = function()
 			M.select_buffer()
