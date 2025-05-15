@@ -7,6 +7,7 @@ local state = {
 	buffers = {},
 	selected_idx = 1,
 	timer = nil,
+	lastBuf = -1,
 }
 
 local function get_valid_buffers()
@@ -220,6 +221,9 @@ function M.select_buffer()
 	local selected = state.buffers[state.selected_idx]
 	if selected and vim.api.nvim_buf_is_valid(selected.bufnr) then
 		M.close()
+
+		local current_buf_id = vim.api.nvim_get_current_buf()
+		state.lastBuf = current_buf_id
 		vim.api.nvim_set_current_buf(selected.bufnr)
 	else
 		vim.notify("Selected buffer is invalid or does not exist", vim.log.levels.ERROR)
@@ -242,6 +246,17 @@ function M.select_prev()
 		update_buffer_contents()
 		reset_timer()
 	end
+end
+
+function M.open_latest_buffer()
+	if state.lastBuf == -1 then
+		vim.notify("No previous buffer to switch to", vim.log.levels.INFO)
+		return
+	end
+
+	local new_latest_buffer_id = vim.api.nvim_get_current_buf()
+	vim.api.nvim_set_current_buf(state.lastBuf)
+	state.lastBuf = new_latest_buffer_id
 end
 
 function M.setup(conf)
