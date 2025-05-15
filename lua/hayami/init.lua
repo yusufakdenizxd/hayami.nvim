@@ -123,6 +123,21 @@ local function setup_keymaps()
 		silent = true,
 	})
 
+	vim.api.nvim_buf_set_keymap(buf, "n", "j", "", {
+		callback = function()
+			M.select_next()
+		end,
+		noremap = true,
+		silent = true,
+	})
+
+	vim.api.nvim_buf_set_keymap(buf, "n", "k", "", {
+		callback = function()
+			M.select_prev()
+		end,
+		noremap = true,
+		silent = true,
+	})
 	vim.api.nvim_buf_set_keymap(buf, "n", c.opts.mappings.next, "", {
 		callback = function()
 			M.select_next()
